@@ -26,6 +26,14 @@ const findAllGames = async (req, res, next) => {
   next();
 };
 
+const checkIsVoteRequest = async (req, res, next) => {
+  // Если в запросе присылают только поле users
+  if (Object.keys(req.body).length === 1 && req.body.users) {
+    req.isVoteRequest = true;
+  }
+  next();
+};
+
 const findGameById = async (req, res, next) => {
   try {
     req.game = await games
@@ -57,6 +65,11 @@ const deleteGame = async (req, res, next) => {
 };
 
 const checkEmptyFields = async (req, res, next) => {
+  if (req.isVoteRequest) {
+    next();
+    return;
+  }
+
   if (
     !req.body.title ||
     !req.body.description ||
@@ -130,4 +143,5 @@ module.exports = {
   checkIfUsersAreSafe,
   checkIfCategoriesAvaliable,
   checkIsGameExists,
+  checkIsVoteRequest,
 };
