@@ -4,7 +4,7 @@ const path = require('path');
 
 const { PORT } = require('./config');
 
-const { cors } = require('./middlewares/cors');
+const cors = require('cors');
 const { excludeHTML } = require('./middlewares/static');
 const { connectToDatabase } = require('./database/connect');
 
@@ -15,7 +15,7 @@ const app = express();
 connectToDatabase();
 
 app.use(
-  cors,
+  cors(),
   cookieParser(),
   express.json(),
   excludeHTML,
